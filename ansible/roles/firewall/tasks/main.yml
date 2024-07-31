@@ -1,0 +1,17 @@
+---
+# tasks file for firewall
+- name: Install UFW
+  apt:
+    name: ufw
+    state: present
+    update_cache: yes
+
+- name: Configure firewall rules
+  ufw:
+    rule: allow
+    name: "{{ item }}"
+  with_items:
+    - 'Nginx Full'
+    - 'OpenSSH'
+  notify:
+    - Reload UFW

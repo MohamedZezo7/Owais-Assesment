@@ -1,0 +1,14 @@
+---
+# handlers file for nginx
+- name: Start and enable Nginx
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started
+  become: yes
+
+- name: Reload Nginx
+  systemd:
+    name: nginx
+    state: reloaded
+  become: yes

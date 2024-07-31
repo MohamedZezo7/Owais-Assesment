@@ -1,0 +1,5 @@
+---
+# vars file for nginx
+# Default variables for the nginx role
+domain_name: owais-app.duckdns.org
+app_port: 30003

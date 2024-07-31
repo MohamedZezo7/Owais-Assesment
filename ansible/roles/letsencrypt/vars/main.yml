@@ -1,0 +1,4 @@
+---
+# vars file for letsencrypt
+# Default variables for the nginx role
+domain_name: owais-app.duckdns.org

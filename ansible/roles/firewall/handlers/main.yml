@@ -1,0 +1,5 @@
+---
+# handlers file for firewall
+- name: Reload UFW
+  ufw:
+    state: reloaded

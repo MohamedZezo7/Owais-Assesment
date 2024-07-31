@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: myapp
+        image: myapp:latest
+        env:
+        # MySQL environment variables
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DB_PORT
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: DB_PASSWORD
+        - name: DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DATABASE
+        # MongoDB environment variables
+        - name: MONGO_URI
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: MONGO_URI
+        - name: MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secrets
+              key: MONGO_USER
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secrets
+              key: MONGO_PASSWORD
+        - name: POOL_SIZE
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: POOL_SIZE
+        # Redis environment variables
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: REDIS_PORT
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: NODE_ENV
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: PORT
+        volumeMounts:
+        - name: app-storage
+          mountPath: /mnt/data/app
+        resources:  # Adding resource requests and limits
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      - name: sidecar-container
+        image: logging-sidecar:1.0.0  # Use a specific version tag
+        volumeMounts:
+        - name: app-storage
+          mountPath: /logs
+        command: ["/bin/sh", "-c", "tail -f /logs/app.log"]
+      volumes:
+      - name: app-storage
+        persistentVolumeClaim:
+          claimName: app-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app
+spec:
+  type: NodePort
+  ports:
+  - port: 3000
+    targetPort: 3000
+    nodePort: 30003
+  selector:
+    app: my-app

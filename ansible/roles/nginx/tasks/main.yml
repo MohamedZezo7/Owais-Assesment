@@ -1,0 +1,31 @@
+---
+# tasks file for nginx
+- name: apt update
+  apt:
+    update_cache: yes
+
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+  become: yes
+  notify: 
+    - Start and enable Nginx
+
+- name: Configure Nginx as a reverse proxy
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+  notify:
+    - Reload Nginx
+
+- name: Enable Nginx site configuration
+  command: nginx -t && ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+  notify:
+    - Reload Nginx
+
+- name: Test Nginx configuration
+  command: nginx -t
+  become: yes
+  notify:
+    - Reload Nginx

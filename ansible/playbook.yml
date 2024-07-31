@@ -1,0 +1,8 @@
+---
+- name: Set up Nginx with Let's Encrypt
+  hosts: localhost
+  become: yes
+  roles:
+    - nginx
+    - letsencrypt
+    - firewall

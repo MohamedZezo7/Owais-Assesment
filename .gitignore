@@ -1,0 +1,41 @@
+# Ansible
+*.retry
+*.log
+secrets/
+vars/*.vault
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+
+# Terraform
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraform/
+crash.log
+crash.*
+*.tfplan
+.terraform.lock.hcl
+
+# OS generated files
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.swo
+
+# Editor directories and files
+.vscode/
+*.code-workspace
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
