@@ -1,8 +1,10 @@
 'use strict';
 
+// Load environment variables from .env file
+require('dotenv').config();
+
 // Required modules
 const { Sequelize } = require('sequelize'),
-  config = require('config'),
   fs = require('fs'),
   path = require('path'),
   basename = path.basename(__filename),
@@ -20,17 +22,16 @@ class SequelizeConn {
   async connectDB() {
     try {
       // First time connection
-      if(!SequelizeConn.sequelize) {
-        // Get MySQL config details
-        const mysqlConfig = config.get('mysql'),
-          host = mysqlConfig.host,
-          port = mysqlConfig.port,
-          user = mysqlConfig.user,
-          password = mysqlConfig.password,
-          database = mysqlConfig.database;
+      if (!SequelizeConn.sequelize) {
+        // Get MySQL config details from environment variables
+        const host = process.env.DB_HOST,
+          port = process.env.DB_PORT,
+          user = process.env.DB_USER,
+          password = process.env.DB_PASSWORD,
+          database = process.env.DATABASE;
 
         // Check if MySQL config is present
-        if(!host || !user || !database) {
+        if (!host || !user || !database) {
           logger.error(`SequelizeConn:connectDB() function => Error = MySQL config not found`);
           return false;
         }
@@ -42,12 +43,12 @@ class SequelizeConn {
           logging: false,
           dialect: 'mysql',
           pool: {
-            max: mysqlConfig.connectionLimit || 10,
+            max: 10,
             min: 0,
             acquire: 30000,
             idle: 10000
           },
-          timezone: mysqlConfig.timezone || '+05:30'
+          timezone: '+05:30'
         });
 
         // Check if connection is established
@@ -62,8 +63,7 @@ class SequelizeConn {
 
       // On connection success
       return true;
-    }
-    catch(e) {
+    } catch (e) {
       logger.error(`SequelizeConn:connectDB() function => Error = `, e);
       throw e;
     }
@@ -73,15 +73,14 @@ class SequelizeConn {
   async closeConnection() {
     try {
       // Close
-      if(SequelizeConn.sequelize) await SequelizeConn.sequelize.close();
+      if (SequelizeConn.sequelize) await SequelizeConn.sequelize.close();
 
       // Set to null
       SequelizeConn.sequelize = null;
 
       // Success
       return true;
-    }
-    catch(e) {
+    } catch (e) {
       logger.error(`SequelizeConn:closeConnection() function => Error = `, e);
       throw e;
     }
@@ -103,8 +102,7 @@ class SequelizeConn {
           const schema = require(path.join(schemaFolder, file))(SequelizeConn.sequelize);
           SequelizeConn.schema[schema.name] = schema;
         });
-    }
-    catch(e) {
+    } catch (e) {
       logger.error(`SequelizeConn:importSchema() function => Error = `, e);
       throw e;
     }
