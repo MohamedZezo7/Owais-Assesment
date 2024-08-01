@@ -43,12 +43,12 @@ class SequelizeConn {
           logging: false,
           dialect: 'mysql',
           pool: {
-            max: 10,
-            min: 0,
-            acquire: 30000,
-            idle: 10000
+            max: process.env.DB_POOL_MAX || 10,
+            min: process.env.DB_POOL_MIN || 0,
+            acquire: process.env.DB_POOL_ACQUIRE || 30000,
+            idle: process.env.DB_POOL_IDLE || 10000
           },
-          timezone: '+05:30'
+          timezone: process.env.DB_TIMEZONE || '+05:30'
         });
 
         // Check if connection is established
