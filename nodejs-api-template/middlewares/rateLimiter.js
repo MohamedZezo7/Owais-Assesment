@@ -14,10 +14,13 @@ const { setErrorResponse } = reqlib('/helpers/response.js');
 const maxWrongLoginAttemptsByIPperDay = 100,
   maxConsecutiveLoginFailsByUsernameAndIP = 10;
 
+  // Load environment variables from .env file
+require('dotenv').config();
+
 // Redis client
 const redisClient = redis.createClient({
-  host: config.get('redis.host'),
-  port: config.get('redis.port'),
+  host: process.env.REDIS_HOST || 'localhost', // Default to localhost if not set
+  port: process.env.REDIS_PORT || 6379, // Default to 6379 if not set
   enable_offline_queue: false
 });
 

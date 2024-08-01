@@ -23,19 +23,19 @@ class RedisDB {
       if (!RedisDB.redisClient) {
 
         // Get Redis config from environment variables
-        const host = process.env.REDIS_HOST,
-          port = process.env.REDIS_PORT;
+        const REDIS_HOST = process.env.REDIS_HOST,
+        REDIS_PORT = process.env.REDIS_PORT;
 
         // Check if Redis config is present
-        if (!host || !port) {
+        if (!REDIS_HOST || !REDIS_PORT) {
           logger.error(`Redis:connectDB() function => Error = Redis config not found`);
           return false;
         }
 
         // Connect to Redis client
         const client = redis.createClient({
-          host: host,
-          port: parseInt(port, 10) || 6379
+          REDIS_HOST: REDIS_HOST,
+          REDIS_PORT: parseInt(REDIS_PORT, 10) || 6379
         });
 
         // Check if any error while connecting to DB
