@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: nodejs_api
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db_dump/nodejs_api_dump.sql:/docker-entrypoint-initdb.d/nodejs_api_dump.sql
+      - ./init-db.sh:/init-db.sh
+    entrypoint: ["/bin/sh", "/init-db.sh"]
+    networks:
+      - mynetwork
+
+  mongo:
+    image: mongo:4.2
+    container_name: mongodb-container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: node
+      MONGO_INITDB_ROOT_PASSWORD: Node@123
+      MONGO_INITDB_DATABASE: nodejs_api
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    networks:
+      - mynetwork
+
+  redis:
+    image: redis:3.2
+    container_name: redis-container
+    ports:
+      - "6379:6379"
+    networks:
+      - mynetwork
+
+  backend:
+    image: owais-backend:v1
+    container_name: back-container
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_USER: root
+      DB_PASSWORD: my-secret-pw
+      DATABASE: nodejs_api
+      NODE_ENV: development
+      PORT: "3000"
+      MONGO_URI: "mongodb://node:Node%40123@mongo:27017/nodejs_api"
+      MONGO_USER: node
+      MONGO_PASSWORD: Node@123
+      POOL_SIZE: "10"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+    depends_on:
+      - mysql
+      - mongo
+      - redis
+    networks:
+      - mynetwork
+    entrypoint: ["/bin/sh", "-c", "sleep 30 && node index.js"]
+
+networks:
+  mynetwork:
+    driver: bridge
+
