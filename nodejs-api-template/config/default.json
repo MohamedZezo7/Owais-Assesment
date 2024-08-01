@@ -12,10 +12,7 @@
     "database": "nodejs_api",
     "timezone": "+05:30"
   },
-  "redis": {
-    "host": "localhost",
-    "port": 6379
-  },
+ 
   "mongo": {
     "uri": "mongodb://localhost:27017/nodejs_api",
     "user": "node",
