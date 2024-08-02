@@ -17,7 +17,7 @@ scrape_configs:
       module: [http_2xx]  # Choose the appropriate module
     static_configs:
       - targets:
-          - http://135.237.120.226/
+          - http://135.237.120.226/  # Target you want to probe
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
