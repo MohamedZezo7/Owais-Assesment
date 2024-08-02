@@ -3,9 +3,6 @@ modules:
     prober: http
     timeout: 5s
     http:
+      valid_http_versions: ["HTTP/1.1", "HTTP/2"]
+      valid_status_codes: []
       method: GET
-      headers:
-        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
-      valid_http_versions: ["1xx", "2xx", "3xx"]
-      valid_http_mimes: ["text/*"]
-      valid_http_status_codes: []  # An empty list means all status codes are considered valid
