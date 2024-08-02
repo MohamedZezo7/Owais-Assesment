@@ -1,7 +1,7 @@
 ---
 - name: Set up Nginx with Let's Encrypt
-  hosts: localhost
-  become: yes
+  hosts: owais-server
+  become: true
   roles:
     - nginx
     - letsencrypt
