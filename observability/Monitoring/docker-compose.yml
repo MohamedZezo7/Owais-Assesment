@@ -19,12 +19,6 @@ services:
     volumes:
       - ./grafana-provisioning/datasources:/etc/grafana/provisioning/datasources
 
-  node_exporter:
-    image: prom/node-exporter:latest
-    network_mode: "host"  # Use host network mode to access host metrics
-    ports:
-      - "9100:9100"
-
   blackbox_exporter:
     image: prom/blackbox-exporter:latest
     ports:
