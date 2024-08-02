@@ -17,6 +17,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=owais-grafana-pw  # Set Grafana admin password
     volumes:
+      - ./grafana-provisioning/dashboards:/etc/grafana/provisioning/dashboards
       - ./grafana-provisioning/datasources:/etc/grafana/provisioning/datasources
 
   blackbox_exporter:
