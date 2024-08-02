@@ -17,11 +17,11 @@ scrape_configs:
       module: [http_2xx]  # Choose the appropriate module
     static_configs:
       - targets:
-          - http://135.237.120.226/  # Target you want to probe
+          - http://135.237.120.226:80/  # Target you want to probe
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
       - target_label: instance
-        replacement: 135.237.120.226
+        replacement: blackbox_exporter
       - target_label: __address__
-        replacement: 135.237.120.226:9115
+        replacement: blackbox_exporter:9115

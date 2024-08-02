@@ -3,22 +3,25 @@ services:
   prometheus:
     image: prom/prometheus:latest
     command:
-      - --storage.tsdb.retention.time=7d
       - --config.file=/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
 
   grafana:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=owais-grafana-pw  # Set Grafana admin password
+      - GF_SECURITY_ADMIN_PASSWORD=owais-grafana-pw
     volumes:
       - ./grafana-provisioning/dashboards:/etc/grafana/provisioning/dashboards
       - ./grafana-provisioning/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - monitoring
 
   blackbox_exporter:
     image: prom/blackbox-exporter:latest
@@ -26,3 +29,9 @@ services:
       - "9115:9115"
     volumes:
       - ./blackbox.yml:/etc/blackbox_exporter/config.yml
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
