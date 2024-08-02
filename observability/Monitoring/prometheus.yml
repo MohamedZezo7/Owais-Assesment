@@ -22,6 +22,6 @@ scrape_configs:
       - source_labels: [__address__]
         target_label: __param_target
       - target_label: instance
-        replacement: blackbox_exporter
+        replacement: 135.237.120.226
       - target_label: __address__
-        replacement: blackbox_exporter:9115
+        replacement: 135.237.120.226:9115
