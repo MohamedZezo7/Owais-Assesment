@@ -3,7 +3,7 @@ resource "aws_security_group" "security_group" {
   description = "Allowing Jenkins, Prometheus, Grafana , SSH Access"
 
   ingress = [
-    for port in [22, 443, 8080, 9000, 9090, 80, 9100, 3000, 9200, 5601,5044 ] : {
+    for port in [22, 443, 8080, 9000, 9090, 80, 9100, 3000, 9200, 5601, 5044] : {
       description      = "TLS from VPC"
       from_port        = port
       to_port          = port

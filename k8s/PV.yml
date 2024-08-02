@@ -3,11 +3,10 @@ kind: PersistentVolume
 metadata:
   name: mongo-pv
 spec:
+  capacity:
+    storage: 1Gi
   accessModes:
     - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
   hostPath:
     path: /mnt/data/mongo  # MongoDB storage path
 
@@ -17,10 +16,9 @@ kind: PersistentVolume
 metadata:
   name: app-pv
 spec:
+  capacity:
+    storage: 1Gi
   accessModes:
     - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
   hostPath:
     path: /mnt/data/app  # Application logs path

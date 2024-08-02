@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: myapp:latest
+        image: mohamedabdelaziz10/owais-backend:v1
         env:
         # MySQL environment variables
         - name: DB_HOST
@@ -94,12 +94,6 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
-      - name: sidecar-container
-        image: logging-sidecar:1.0.0  # Use a specific version tag
-        volumeMounts:
-        - name: app-storage
-          mountPath: /logs
-        command: ["/bin/sh", "-c", "tail -f /logs/app.log"]
       volumes:
       - name: app-storage
         persistentVolumeClaim:

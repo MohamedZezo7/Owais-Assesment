@@ -16,7 +16,7 @@ terraform {
 
   backend "s3" {
 
-    bucket = "advanced-end-to-end-devsecops"
+    bucket = "owasis-terraform-state"
 
     key = "state/terraform.tfstate"
 

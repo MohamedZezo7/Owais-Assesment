@@ -58,13 +58,32 @@ variable "iam_role" {
 variable "instance_type" {
   description = "Instance type"
   type        = string
-  default     = "t2.large"
 }
 
 variable "volume_size" {
   description = "Size of the root volume in GB"
   type        = number
   default     = 64
+}
+
+variable "rds_cluster_name" {
+  description = "The name of the RDS cluster"
+  type        = string
+}
+
+variable "rds_instance_name" {
+  description = "The name of the RDS instance"
+  type        = string
+}
+
+variable "rds_engine" {
+  description = "The engine for the RDS instance"
+  type        = string
+}
+
+variable "rds_engine_version" {
+  description = "The engine version for the RDS instance"
+  type        = string
 }
 
 variable "db_name" {
@@ -78,4 +97,5 @@ variable "db_username" {
 }
 
 variable "db_password" {
-  description = "Database password
+  description = "Database password"
+}

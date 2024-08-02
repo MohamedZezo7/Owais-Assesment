@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: mongodb
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: mongodb
@@ -22,40 +22,23 @@ spec:
             - name: MONGO_INITDB_ROOT_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: db-secrets
-                  key: mongo-user
+                  name: mongodb-secrets
+                  key: MONGO_USER
             - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: db-secrets
-                  key: mongo-password
+                  name: mongodb-secrets
+                  key: MONGO_PASSWORD
             - name: MONGO_INITDB_DATABASE
               value: nodejs_api
-          volumeMounts:
-            - name: mongo-storage
-              mountPath: /data/db
           resources:
             requests:
-              memory: "512Mi"
-              cpu: "250m"
+              memory: "256Mi"
+              cpu: "100m"
             limits:
-              memory: "1Gi"
-              cpu: "500m"
-      initContainers:
-        - name: mongo-init
-          image: mongo:4.2
-          command: ['sh', '-c', 'mongo mongodb://node:Node@123@localhost:27017/nodejs_api /mongo-init.js']
-          volumeMounts:
-            - name: mongo-init-script
-              mountPath: /mongo-init.js
-              subPath: mongo-init.js
-      volumes:
-        - name: mongo-storage
-          persistentVolumeClaim:
-            claimName: mongo-pvc
-        - name: mongo-init-script
-          configMap:
-            name: mongo-init-script
+              memory: "512Mi"
+              cpu: "200m"
+        
 
 ---
 
