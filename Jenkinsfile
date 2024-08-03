@@ -94,7 +94,7 @@ pipeline {
                             git config user.email "mohamedabdelazizk10@gmail.com"
                             git config user.name "Mohamed Abdelaziz"
                             imageTag=$(grep -oP '(?<=backend:)[^ ]+' Deploy-app.yml)
-                            sed -i "s/${IMAGE_NAME}:${imageTag}/${DOCKER_IMAGE}/" Deploy-app.yml
+                            sed -i "s/${IMAGE_NAME}:${imageTag}/${IMAGE_NAME}:*/g" Deploy-app.yml
                             git add Deploy-app.yml
                             git commit -m "Update deployment Image to version ${BUILD_NUMBER}"
                             git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main

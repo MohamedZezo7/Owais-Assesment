@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: app-config
 data:
-  DB_HOST: "database-1.cxwq2s0oko4c.us-east-1.rds.amazonaws.com"            #rds endpoint
+  DB_HOST: "owais-database.mysql.database.azure.com"            #azure mysql endpoint
   DB_PORT: "3306"
   DATABASE: "nodejs_api"
   MONGO_URI: "mongodb://mongo-service:27017/nodejs_api"
