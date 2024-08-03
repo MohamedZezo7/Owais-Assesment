@@ -1,10 +1,10 @@
-# Owais Assessment
+ Owais Assessment
 
-## Introduction
+ Introduction
 
 This project involves setting up a cloud-based application infrastructure with various components including Docker, Kubernetes, Terraform, Ansible, Jenkins, and monitoring tools. Below are the steps and configurations used for this setup.
 
-## Application Configuration
+ Application Configuration
 
 To make application variables dynamic and manageable, we use environment variables stored in a `.env` file. The following files were updated to support this:
 - `mongo.js`
@@ -13,11 +13,11 @@ To make application variables dynamic and manageable, we use environment variabl
 - `index.js`
 - `config.js`
 
-## Local Testing
+ Local Testing
 
 To test the application locally, use Docker Compose. Navigate to the `nodejs-api-template` directory and run:
 
-```bash
+
 cd nodejs-api-template
 sudo docker-compose up -d
 
@@ -31,7 +31,7 @@ Provision Infrastructure on AWS:
 Components: VPC, EC2, RDS Database, Security Groups, and IAM roles.
 Diagram:
 
-![Alt Text](images/AWS%20Diagram.png)
+![AWS Diagram](./images/AWS%20Diagram.png)
 
 ------
 
@@ -109,7 +109,7 @@ Password: owais-grafana-pw
 
   Prometheus Targets : 
 
-  ![Alt Text](images/Prometheus-Metrics.png)
+   ![Alt Text](./images/Prometheus-Metrics.png)
 
 
 
@@ -119,17 +119,17 @@ Password: owais-grafana-pw
   
    1 - Application health check Dashboard (id: 7587)
 
-![Alt Text](images/Grafana-blackbox.png)
+   ![Alt Text](./images/Grafana-blackbox.png)
 
 
    2 - Server Metrics Dashboard (id: 11074)
 
-![Alt Text](images/Server-Dashboard.png)
+  ![Alt Text](./images/Server-Dashboard.png)
 
 
    3 - Jenkins Performance and Health (id: 9964)
 
-![Alt Text](images/Jenkins-Dashboard.png)
+   ![Alt Text]( ./images/Jenkins-Dashboard.png )
 
 
 
@@ -137,7 +137,7 @@ Password: owais-grafana-pw
 
 API Testing :
 
-![Alt Text](images/Testing-api.png)
+   ![Alt Text](images/Testing-api.png)
 
 
 -----------------------------------------------------------------------------------------------------------------------------
