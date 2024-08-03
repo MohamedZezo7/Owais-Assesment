@@ -70,7 +70,9 @@ Deployed on Minikube with Horizontal Pod Autoscaler and Network Policies.
 
  -------------
 Cloud Environment
-Due to the closure of my Amazon account during project implementation, the environment was replicated on Microsoft Azure. The current setup is for development purposes only and does not include a production domain.
+Since my Amazon account was locked while executing the project, the environment would be replicated to Microsoft Azure Otherwise I would have implemented a traffic distribution mechanism between AWS and Azure
+
+. The current setup is for development purposes only and does not include the production domain.
  ---------------------------------------------
 
 Jenkins Setup
@@ -79,7 +81,8 @@ Jenkins Setup
 
  ------------------------
 
-AApplication Access
+Application Access
+
 After running the pipeline and applying the Kubernetes manifests, the application is accessible via NodePort at http://192.168.49.2:30003. Nginx is used as a reverse proxy listening on port 80:
 
 App URL: http://135.237.120.226:80
