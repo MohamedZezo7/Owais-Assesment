@@ -1,87 +1,106 @@
-# Owais-Assesment
-First, we need to make the application  variables become dynamic to pass it when we write the k8s manifest file ,
-So I use the dotenv file and make the all variables store in .env by editing this files in the application code :
-(mongo.js - redis.js - sequelize.js - index.js - config.js)
--------
-To test the application locally you can run the docker-compose file that locate in nodejs-api-template directory 
-# cd nodejs-api-template 
-# sudo docker-compose up -d 
+# Owais Assessment
+
+## Introduction
+
+This project involves setting up a cloud-based application infrastructure with various components including Docker, Kubernetes, Terraform, Ansible, Jenkins, and monitoring tools. Below are the steps and configurations used for this setup.
+
+## Application Configuration
+
+To make application variables dynamic and manageable, we use environment variables stored in a `.env` file. The following files were updated to support this:
+- `mongo.js`
+- `redis.js`
+- `sequelize.js`
+- `index.js`
+- `config.js`
+
+## Local Testing
+
+To test the application locally, use Docker Compose. Navigate to the `nodejs-api-template` directory and run:
+
+```bash
+cd nodejs-api-template
+sudo docker-compose up -d
+
 
 ------
 The Steps : 
 
-1 - Provisiong the infrastructure on AWS using Terraform scripts include ( VPC , EC2 , RDS Database , Security Groups and IAM roles )
+Infrastructure Provisioning
+Provision Infrastructure on AWS:
 
-This is a Simple Diagram of our Infrastrucure 
+Components: VPC, EC2, RDS Database, Security Groups, and IAM roles.
+Diagram:
+
 ![Alt Text](images/AWS%20Diagram.png)
 
-To Run this Infrastrucure You Need to Install Terraform and change the variables that locate ./Terraform/terraform.tfvars to meet your environment variable : 
-after that you can run this commands to apply changes after add your aws credentials in ~/.aws/credentials
+------
+
+Setup Instructions:
+
+Install Terraform and update variables in ./Terraform/terraform.tfvars according to your environment.
+
+Run the following commands after setting your AWS credentials in ~/.aws/credentials:
 
 # cd Terraform 
 # terraform init
 # terraform plan --var-file terraform.tfvars
 # terraform apply --var-file --auto-approve 
 
-after that you that the infrastructure is provisioned and the terraform state file store at your s3 bucket and lock file in dynamodb
+The infrastructure state is stored in an S3 bucket, with a lock file in DynamoDB.
 
 --------------------------------------------
 
-2 - Use Ansible as a COnfiguration Management tool to Configure our ubuntu server with nginx & let`s encrypt and Firewall Rules : 
- change the variables with your variabales in ( ansible.cfg, inventory.ini, playbook.yml, roles variables)
-cd ansible 
+Configure Servers with Ansible:
 
-To Check the Syntax
-# ansible-playbook playbook.yml syntax-check
+Components: Configure Ubuntu servers with Nginx, Let’s Encrypt, and firewall rules.
+Files: Update variables in ansible.cfg, inventory.ini, playbook.yml, and role variables.
+Commands:
 
-ping the server
-# ansible all -i inventory.ini -m ping
+Check syntax: ansible-playbook playbook.yml --syntax-check
+Ping the server: ansible all -i inventory.ini -m ping
+Run the playbook: ansible-playbook -i inventory.ini playbook.yml
+Docker and Kubernetes
+Docker: Built and pushed the API image to Docker Hub:
 
-run the playbook 
+Image Name: mohamedabdelaziz10/owais-backend:v1
+Kubernetes:
 
-# ansible-playbook -i inventory.ini playbook.yml
-
----------------------------------------------------------------------------------------------
-
-After this two stages , we go through write the Dockerfile to build the image and push the first image of our api to Dockerhub : 
- the first image name at Dockerhub : mohamedabdelaziz10/owais-backend:v1 
-
- - Now we can Write the Kubernetes Manifest file that will run on minikube  on ec2 with Horizontal Pod AutoScaler and Netwrok Policy 
- you can check the manifest files at k8s/ Directory
+The manifests for deployment are located in the k8s/ directory.
+Deployed on Minikube with Horizontal Pod Autoscaler and Network Policies.
 
  -------------
-Unfortunately, my Amazon account was closed while I was implementing the project, so I built the environment on Microsoft Azure cloud with the same environment that i discuss it above 
-
-I don't currently have a domain, so I'm working in a development environment with server ip address 
-( this is not on production environment ) 
+Cloud Environment
+Due to the closure of my Amazon account during project implementation, the environment was replicated on Microsoft Azure. The current setup is for development purposes only and does not include a production domain.
  ---------------------------------------------
 
- Now everything is ok to configure our Jenkins Server you can check the Jenkins Configuration at this endpoint : http://135.237.120.226:8080 
- 
- and the Jenkins file ./Jenkinsfile 
+Jenkins Setup
+ Jenkins Configuration: Available at http://135.237.120.226:8080
+ Jenkinsfile: Located at ./Jenkinsfile
 
  ------------------------
 
-After Running the Pipeline and apply the k8s manifest files the app is available at nodeport http://192.168.49.2:30003 so we use Nginx as reverse Proxy 
-to listen on port 80 and to access the private app : 
+AApplication Access
+After running the pipeline and applying the Kubernetes manifests, the application is accessible via NodePort at http://192.168.49.2:30003. Nginx is used as a reverse proxy listening on port 80:
 
-app url : http://135.237.120.226:80
+App URL: http://135.237.120.226:80
 
-Note : I can`t give the app certificate because the free domains have high latency but in production we buy a domain and give it certificate 
+Note: A domain certificate is not provided due to latency issues with free domains. A domain with a certificate will be used in production. 
 
 -----------------------------------------
 
-- Now we need Monitoring and Logging stack to our Application so we use : 
- 
-  Prometheus, Grafana, NodeExporter, Blackbox Exporter to Monitor our application status & Jenkins Metrics & The Server Metrics 
+Monitoring and Logging
+Tools: Prometheus, Grafana, NodeExporter, and Blackbox Exporter.
 
-  So Now We Need to Write Docker-compose.yml and create three dashboards to application status & Jenkins Metrics & The Server Metrics
+Docker Compose: Use Docker Compose to set up these tools and create dashboards for application status, Jenkins metrics, and server metrics.
 
-  Prometheus Endpoint : http://135.237.120.226:9090
-  Grafana Endpoint : http://135.237.120.226:3000 
-  (usenname : admin
-   password : owais-grafana-pw
- )
+Endpoints:
+
+Prometheus: http://135.237.120.226:9090
+
+Grafana: http://135.237.120.226:3000
+Username: admin
+Password: owais-grafana-pw
+
 
  -------
 
@@ -95,22 +114,77 @@ Note : I can`t give the app certificate because the free domains have high laten
 
  This is the Three Dashboards : 
   
-   1 - Application health check Dashboard 
+   1 - Application health check Dashboard (id: 7587)
 
 ![Alt Text](images/Grafana-blackbox.png)
 
 
-   2 - Server Metrics Dashboard 
+   2 - Server Metrics Dashboard (id: 11074)
+
 ![Alt Text](images/Server-Dashboard.png)
 
 
-   3 - Jenkins Performance and Health 
+   3 - Jenkins Performance and Health (id: 9964)
+
 ![Alt Text](images/Jenkins-Dashboard.png)
 
 
 
 --------------------------------
 
-Testing API :
+API Testing :
 
 ![Alt Text](images/Testing-api.png)
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+To improve or scale this setup in a production environment , consider the following:
+
+1.Source Code Enhancement: 
+ - Using Branches for Multiple Environments
+   Objective: Improve management and deployment of code across different environments ( development, staging, production) by using Git branches to isolate and manage environment-specific changes.
+
+
+2.Dockerization Enhancement: 
+  Up-to-Date Images, Multi-Stage Builds, and Security Best Practices
+  Objective: Improve the Dockerization process by leveraging up-to-date images, implementing multi-stage builds for efficiency, and security best practices to ensure secure and optimized containerized applications.
+
+
+
+
+3. Terraform Enhancements
+
+ - Terraform Modules
+    Objective: Promote code reusability and maintainability by encapsulating infrastructure components into reusable modules.
+ 
+ - Terraform Workspaces
+   Objective: Manage multiple environments (e.g., development, staging, production) using isolated workspaces to maintain separate state files and configurations.
+
+
+4. Kubernetes Enhancements
+--------------------------
+
+ - Switch to Managed Kubernetes Service: Replace Minikube with a managed Kubernetes service  Amazon EKS (Elastic Kubernetes Service). 
+   This provides better scalability, security, and operational management.
+
+ - High Availability:
+   Deploy Kubernetes across multiple availability zones to ensure high availability and fault tolerance.
+
+ - Cluster Autoscaler
+   Objective: Automatically adjust the number of nodes in your Kubernetes cluster based on current resource utilization, ensuring efficient use of resources and cost management.
+
+ - Ingress Controller
+   Objective: Manage and secure external access to your services, providing routing and load balancing capabilities.
+
+ - Rancher
+   Objective: Simplify the management of Kubernetes clusters with a user-friendly interface, providing tools for cluster management, monitoring, and security.
+  
+ - Prometheus and ELK Stack
+   Objective: Implement comprehensive monitoring and logging solutions to observe system performance and diagnose issues.
+
+
+
+Overall Security Practices: Private Subnet, Restricted Internet Access, and IAM Least Privilege
+Objective: Enhance the security of  cloud infrastructure by ensuring all resources are confined to private subnets with no direct internet access and by enforcing least privilege access controls using IAM.

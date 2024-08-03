@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,6 +12,25 @@ spec:
       labels:
         app: mongodb
     spec:
+      initContainers:
+        - name: mongo-init
+          image: mongo:4.2
+          command: ['sh', '-c', 'mongo --host localhost /mongo-init.js']
+          volumeMounts:
+            - name: mongo-init-script
+              mountPath: /mongo-init.js
+              subPath: mongo-init.js
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secrets
+                  key: MONGO_USER
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secrets
+                  key: MONGO_PASSWORD
       containers:
         - name: mongodb
           image: mongo:4.2
@@ -38,8 +56,14 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "200m"
-        
-
+          volumeMounts:
+            - name: mongo-init-script
+              mountPath: /mongo-init.js
+              subPath: mongo-init.js
+      volumes:
+        - name: mongo-init-script
+          configMap:
+            name: mongo-init-script
 ---
 
 apiVersion: v1

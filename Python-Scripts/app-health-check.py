@@ -11,4 +11,4 @@ def check_health(url):
         print(f"Health check error: {e}")
 
 if __name__ == "__main__":
-    check_health("https://facebooks.com/health")
+    check_health("http://135.237.120.226/health")

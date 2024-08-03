@@ -111,6 +111,9 @@ pipeline {
                 }
             }
         }
+
+        // Add OWASP ZAP Scan Stage after Deployment
+        
     }
 
     post {
@@ -122,7 +125,7 @@ pipeline {
                         "Build Number: ${env.BUILD_NUMBER}<br/>" +
                         "URL: ${env.BUILD_URL}<br/>",
                     to: 'mohamedabdelazizk10@gmail.com',  
-                    attachmentsPattern: 'trivyfs-backend-job-*.txt, trivyimage-backend-job-*.txt'
+                    attachmentsPattern: 'trivyfs-backend-job-*.txt, trivyimage-backend-job-*.txt, zap-report-${BUILD_NUMBER}.html'
             }
         }
     }
