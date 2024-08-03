@@ -131,7 +131,12 @@ Password: owais-grafana-pw
 
    ![Alt Text]( ./images/Jenkins-Dashboard.png )
 
+   
+   -----------------------------------
 
+   Kibane Endpoint : http://135.237.120.226:5601/
+
+   ![Alt Text]( ./images/Kibana.png )
 
 --------------------------------
 
