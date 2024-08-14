@@ -14,7 +14,7 @@ USER node
 
 RUN npm install && npm audit fix
 
-COPY --chown=node:node . .
+COPY --chown=node:node . . 
 
 EXPOSE 3000
 

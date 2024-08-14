@@ -2,6 +2,8 @@
 
  Introduction
 
+ Welcome From Mohamed owais 
+
 This project involves setting up a cloud-based application infrastructure with various components including Docker, Kubernetes, Terraform, Ansible, Jenkins, and monitoring tools. Below are the steps and configurations used for this setup.
 
  Application Configuration
@@ -196,3 +198,5 @@ To improve or scale this setup in a production environment , consider the follow
 
 Overall Security Practices: Private Subnet, Restricted Internet Access, and IAM Least Privilege
 Objective: Enhance the security of  cloud infrastructure by ensuring all resources are confined to private subnets with no direct internet access and by enforcing least privilege access controls using IAM.
+
+----------------------------------
